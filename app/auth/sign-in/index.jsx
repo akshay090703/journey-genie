@@ -37,6 +37,7 @@ export default function SignIn() {
         // Signed in
         const user = userCredential.user;
         ToastAndroid.show("User Successfully Logged In!", ToastAndroid.LONG);
+        router.replace('/mytrip')
         // ...
       })
       .catch((error) => {

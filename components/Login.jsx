@@ -31,10 +31,11 @@ export default function Login() {
             textAlign: "center",
             color: Colors.GRAY,
             marginTop: 20,
+            marginBottom: "-10%",
           }}
         >
           Discover your next adventure effortlessly. Personalized itineraries at
-          your fingertips. Travel smarted with Ai-driven insights.
+          your fingertips. Travel smarted with AI-driven insights.
         </Text>
 
         <TouchableOpacity
@@ -70,6 +71,6 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.PRIMARY,
     padding: 15,
     borderRadius: 99,
-    marginTop: "25%",
+    marginTop: "25%"
   },
 });
