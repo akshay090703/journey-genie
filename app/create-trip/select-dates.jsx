@@ -80,7 +80,7 @@ export default function SelectDates() {
           onDateChange={onDateChange}
           allowRangeSelection={true}
           minDate={new Date()}
-          maxRangeDuration={30}
+          maxRangeDuration={5}
           selectedRangeStyle={{
             backgroundColor: Colors.PRIMARY,
           }}

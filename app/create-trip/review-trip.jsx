@@ -1,6 +1,6 @@
 import { View, Text } from "react-native";
 import React, { useContext, useEffect } from "react";
-import { useNavigation } from "expo-router";
+import { useNavigation, useRouter } from "expo-router";
 import { Colors } from "../../constants/Colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { CreateTripContext } from "../../context/CreateTripContext";
@@ -9,6 +9,7 @@ import { TouchableOpacity } from "react-native";
 
 export default function ReviewTrip() {
   const navigation = useNavigation();
+  const router = useRouter();
   const { tripData, setTripData } = useContext(CreateTripContext);
 
   useEffect(() => {
@@ -127,7 +128,8 @@ export default function ReviewTrip() {
                 " To " +
                 moment(tripData?.endDate).format("DD MMM") +
                 " "}
-              ({tripData?.totalNoOfNights} nights)
+              ({tripData?.totalNoOfNights}{" "}
+              {tripData?.totalNoOfNights > 1 ? "nights" : "night"})
             </Text>
           </View>
         </View>
@@ -215,7 +217,7 @@ export default function ReviewTrip() {
           borderRadius: 15,
           marginTop: 80,
         }}
-        // onPress={() => onClickContinue()}
+        onPress={() => router.replace("/create-trip/generate-trip")}
       >
         <Text
           style={{
