@@ -4,8 +4,11 @@ import { Colors } from "../../constants/Colors";
 import { CreateTripContext } from "../../context/CreateTripContext";
 import { chatSession } from "../../configs/AiModel";
 import { useRouter } from "expo-router";
-import { auth, db } from "../../configs/FirebaseConfig";
 import { doc, setDoc } from "firebase/firestore";
+import { app, db } from "../../configs/FirebaseConfig";
+import { getAuth } from "@firebase/auth";
+
+const auth = getAuth(app);
 
 export default function GenerateTrip() {
   const { tripData, setTripData } = useContext(CreateTripContext);

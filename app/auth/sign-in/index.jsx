@@ -11,7 +11,10 @@ import { useNavigation, useRouter } from "expo-router";
 import { Colors } from "../../../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { signInWithEmailAndPassword } from "@firebase/auth";
-import { auth } from "../../../configs/FirebaseConfig";
+import { app } from "../../../configs/FirebaseConfig";
+import { getAuth } from "@firebase/auth";
+
+const auth = getAuth(app);
 
 export default function SignIn() {
   const navigation = useNavigation();
@@ -37,7 +40,7 @@ export default function SignIn() {
         // Signed in
         const user = userCredential.user;
         ToastAndroid.show("User Successfully Logged In!", ToastAndroid.LONG);
-        router.replace('/mytrip')
+        router.replace("/mytrip");
         // ...
       })
       .catch((error) => {
