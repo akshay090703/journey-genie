@@ -1,4 +1,4 @@
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, Linking } from "react-native";
 import React, { useEffect, useState } from "react";
 import { TouchableOpacity } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -95,7 +95,7 @@ export default function PlaceCard({ plan, idx }) {
               marginTop: 5,
             }}
           >
-            🎟️ Ticket Price:{" "}
+            🎟️ Estimate Costs:{" "}
             <Text
               style={{
                 fontFamily: "outfit-bold",

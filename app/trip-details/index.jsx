@@ -113,6 +113,15 @@ export default function TripDetails() {
           >
             🚌 {userPreferences.traveler?.title}
           </Text>
+          <Text
+            style={{
+              fontFamily: "outfit",
+              fontSize: 16,
+              color: Colors.GRAY,
+            }}
+          >
+            💰 {userPreferences.budget}
+          </Text>
 
           {/* Flight Info */}
           <FlightInfo flightData={tripDetails?.aiTripPlan?.flight} />
