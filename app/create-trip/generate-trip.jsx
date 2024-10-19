@@ -16,6 +16,12 @@ export default function GenerateTrip() {
   const router = useRouter();
   const user = auth.currentUser;
 
+  useEffect(() => {
+    if (!user) {
+      router.replace("/auth/sign-in");
+    }
+  }, []);
+
   const generateAiTrip = async () => {
     setLoading(true);
 

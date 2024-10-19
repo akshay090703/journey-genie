@@ -6,12 +6,23 @@ import CalendarPicker from "react-native-calendar-picker";
 import { TouchableOpacity } from "react-native";
 import moment from "moment";
 import { CreateTripContext } from "../../context/CreateTripContext";
+import { getAuth } from "@firebase/auth";
+import { app } from "../../configs/FirebaseConfig";
+
+const auth = getAuth(app);
 
 export default function SelectDates() {
   const navigation = useNavigation();
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
   const router = useRouter();
+  const user = auth.currentUser;
+
+  useEffect(() => {
+    if (!user) {
+      router.replace("/auth/sign-in");
+    }
+  }, []);
 
   const { tripData, setTripData } = useContext(CreateTripContext);
 

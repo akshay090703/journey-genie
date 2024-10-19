@@ -1,17 +1,29 @@
 import { View, Text } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useNavigation } from "expo-router";
+import { Link, useNavigation, useRouter } from "expo-router";
 import { Colors } from "../../constants/Colors";
 import { SelectTravelersList } from "../../constants/Options";
 import OptionCard from "../../components/CreateTrip/OptionCard";
 import { TouchableOpacity } from "react-native";
 import { FlatList } from "react-native";
 import { CreateTripContext } from "../../context/CreateTripContext";
+import { getAuth } from "@firebase/auth";
+import { app } from "../../configs/FirebaseConfig";
+
+const auth = getAuth(app);
 
 export default function selectTraveler() {
   const navigation = useNavigation();
   const [selectedTraveler, setSelectedTraveler] = useState();
   const { tripData, setTripData } = useContext(CreateTripContext);
+  const router = useRouter();
+  const user = auth.currentUser;
+
+  useEffect(() => {
+    if (!user) {
+      router.replace("/auth/sign-in");
+    }
+  }, []);
 
   useEffect(() => {
     navigation.setOptions({

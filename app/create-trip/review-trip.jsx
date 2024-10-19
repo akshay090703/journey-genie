@@ -6,11 +6,22 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { CreateTripContext } from "../../context/CreateTripContext";
 import moment from "moment";
 import { TouchableOpacity } from "react-native";
+import { getAuth } from "@firebase/auth";
+import { app } from "../../configs/FirebaseConfig";
+
+const auth = getAuth(app);
 
 export default function ReviewTrip() {
   const navigation = useNavigation();
-  const router = useRouter();
   const { tripData, setTripData } = useContext(CreateTripContext);
+  const router = useRouter();
+  const user = auth.currentUser;
+
+  useEffect(() => {
+    if (!user) {
+      router.replace("/auth/sign-in");
+    }
+  }, []);
 
   useEffect(() => {
     navigation.setOptions({

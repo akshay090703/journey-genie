@@ -12,28 +12,22 @@ import StartNewTripCard from "../../components/MyTrips/StartNewTripCard";
 import { useRouter } from "expo-router";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { app, db } from "../../configs/FirebaseConfig";
-import { getAuth, onAuthStateChanged } from "@firebase/auth";
+import { getAuth } from "@firebase/auth";
 import UserTripList from "../../components/MyTrips/UserTripList";
 
 const auth = getAuth(app);
 
 export default function MyTrip() {
   const [userTrips, setUserTrips] = useState([]);
-  const router = useRouter();
-  const user = auth.currentUser;
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  // const [num, setNum] = useState(0);
+  const router = useRouter();
+  const user = auth.currentUser;
 
   useEffect(() => {
-    const auth = getAuth();
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (!user) {
-        router.replace("/auth/sign-in");
-      }
-    });
-
-    return () => unsubscribe();
+    if (!user) {
+      router.replace("/auth/sign-in");
+    }
   }, []);
 
   useEffect(() => {

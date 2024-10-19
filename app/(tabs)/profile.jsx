@@ -8,15 +8,17 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useNavigation, useRouter } from "expo-router";
-import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { getAuth, signOut } from "firebase/auth";
 import moment from "moment";
 import { Colors } from "../../constants/Colors";
+import { app } from "../../configs/FirebaseConfig";
+
+const auth = getAuth(app);
 
 export default function Profile() {
-  const router = useRouter();
   const navigation = useNavigation();
-  const [user, setUser] = useState(null);
-  const auth = getAuth();
+  const router = useRouter();
+  const user = auth.currentUser;
 
   useEffect(() => {
     navigation.setOptions({
@@ -24,26 +26,17 @@ export default function Profile() {
       headerShown: true,
       headerTransparent: true,
     });
+
+    if (!user) {
+      router.replace("/auth/sign-in");
+    }
   }, []);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
-        setUser(currentUser);
-      } else {
-        setUser(null);
-        router.replace("/auth/sign-in");
-      }
-    });
-
-    return () => unsubscribe();
-  }, [navigation, auth]);
 
   const handleLogout = async () => {
     try {
       await signOut(auth);
       ToastAndroid.show("User successfully logged out!", ToastAndroid.LONG);
-      router.replace("/auth/sign-in");
+      router.dismissAll();
     } catch (error) {
       console.error("Error signing out:", error);
     }

@@ -4,13 +4,22 @@ import { useNavigation, useRouter } from "expo-router";
 import { Colors } from "../../constants/Colors";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { CreateTripContext } from "../../context/CreateTripContext";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth } from "firebase/auth";
+import { app } from "../../configs/FirebaseConfig";
+
+const auth = getAuth(app);
 
 export default function searchPlace() {
   const navigation = useNavigation();
   const { tripData, setTripData } = useContext(CreateTripContext);
   const router = useRouter();
-  const auth = getAuth(); // Get the authentication instance
+  const user = auth.currentUser;
+
+  useEffect(() => {
+    if (!user) {
+      router.replace("/auth/sign-in");
+    }
+  }, []);
 
   useEffect(() => {
     navigation.setOptions({
@@ -19,17 +28,6 @@ export default function searchPlace() {
       headerTitle: "Search",
     });
   }, []);
-
-  // Check if user is logged in and redirect if not
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (!user) {
-        router.replace("/auth/sign-in"); // Redirect to sign-in if not logged in
-      }
-    });
-
-    return () => unsubscribe(); // Clean up the listener
-  }, [auth, router]);
 
   return (
     <View

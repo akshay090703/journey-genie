@@ -6,11 +6,22 @@ import OptionCard from "../../components/CreateTrip/OptionCard";
 import { Colors } from "../../constants/Colors";
 import { TouchableOpacity } from "react-native";
 import { CreateTripContext } from "../../context/CreateTripContext";
+import { getAuth } from "@firebase/auth";
+import { app } from "../../configs/FirebaseConfig";
+
+const auth = getAuth(app);
 
 export default function SelectBudget() {
   const navigation = useNavigation();
   const [selectedOption, setSelectedOption] = useState();
   const router = useRouter();
+  const user = auth.currentUser;
+
+  useEffect(() => {
+    if (!user) {
+      router.replace("/auth/sign-in");
+    }
+  }, []);
 
   const { tripData, setTripData } = useContext(CreateTripContext);
 
