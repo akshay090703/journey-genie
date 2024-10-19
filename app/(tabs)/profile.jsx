@@ -27,17 +27,16 @@ export default function Profile() {
   }, []);
 
   useEffect(() => {
-    // Check user authentication state
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
         setUser(currentUser);
-        // console.log(user);
       } else {
         setUser(null);
+        router.replace("/auth/sign-in");
       }
     });
 
-    return () => unsubscribe(); // Clean up the subscription on unmount
+    return () => unsubscribe();
   }, [navigation, auth]);
 
   const handleLogout = async () => {
@@ -78,7 +77,6 @@ export default function Profile() {
               Last Sign-In:{" "}
               {moment(user.metadata.lastSignInTime).format("DD MMM YYYY")}
             </Text>
-            {/* Add any other user-related information here */}
           </View>
 
           <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
