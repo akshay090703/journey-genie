@@ -45,24 +45,25 @@ export default function PlaceCard({ plan, idx }) {
         style={{
           marginTop: 5,
         }}
-      ></View>
-      <Text
-        style={{
-          fontFamily: "outfit-bold",
-          fontSize: 20,
-        }}
       >
-        {plan.activity}
-      </Text>
-      <Text
-        style={{
-          fontFamily: "outfit",
-          fontSize: 14,
-          color: Colors.GRAY,
-        }}
-      >
-        {plan.details}
-      </Text>
+        <Text
+          style={{
+            fontFamily: "outfit-bold",
+            fontSize: 20,
+          }}
+        >
+          {plan.activity}
+        </Text>
+        <Text
+          style={{
+            fontFamily: "outfit",
+            fontSize: 14,
+            color: Colors.GRAY,
+          }}
+        >
+          {plan.details}
+        </Text>
+      </View>
       <View
         style={{
           display: "flex",
@@ -71,7 +72,11 @@ export default function PlaceCard({ plan, idx }) {
           justifyContent: "space-between",
         }}
       >
-        <View>
+        <View
+          style={{
+            width: "85%",
+          }}
+        >
           <Text
             style={{
               fontFamily: "outfit",

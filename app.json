@@ -15,16 +15,19 @@
     },
     "updates": {
       "fallbackToCacheTimeout": 0,
-      "enabled": true
+      "enabled": true,
+      "url": "https://u.expo.dev/c07ee8fa-e60b-4a0f-a242-06c4d89db3ef"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.akshay.myApp"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.akshay.myApp"
     },
     "web": {
       "bundler": "metro",
@@ -42,6 +45,9 @@
       "eas": {
         "projectId": "c07ee8fa-e60b-4a0f-a242-06c4d89db3ef"
       }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
     }
   }
 }

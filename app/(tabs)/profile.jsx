@@ -24,11 +24,14 @@ export default function Profile() {
       headerShown: true,
       headerTransparent: true,
     });
+  }, []);
 
+  useEffect(() => {
     // Check user authentication state
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
         setUser(currentUser);
+        // console.log(user);
       } else {
         setUser(null);
       }
@@ -53,9 +56,7 @@ export default function Profile() {
         <>
           <View style={styles.profileHeader}>
             <Image
-              source={{
-                uri: user.photoURL || "https://via.placeholder.com/150",
-              }}
+              source={require("../../assets/images/user-placeholder.jpg")}
               style={styles.profileImage}
             />
             <Text style={styles.welcomeText}>
@@ -98,15 +99,17 @@ const styles = StyleSheet.create({
     backgroundColor: "#F5F5F5",
   },
   profileHeader: {
-    flexDirection: "row",
+    flexDirection: "column",
     alignItems: "center",
     marginBottom: 20,
+    gap: 10,
   },
   profileImage: {
     width: 80,
     height: 80,
     borderRadius: 40,
     marginRight: 15,
+    marginTop: 100,
     borderWidth: 2,
     borderColor: "#2196F3",
   },

@@ -22,6 +22,7 @@ export default function UserTripList({ userTrips }) {
       <View
         style={{
           marginTop: 20,
+          marginBottom: 75,
         }}
       >
         {currentTripData?.locationInfo?.photoRef ? (
