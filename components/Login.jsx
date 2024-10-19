@@ -48,7 +48,6 @@ export default function Login() {
               textAlign: "center",
               fontFamily: "outfit",
               fontSize: 17,
-              marginBottom: 20,
             }}
           >
             Get Started
@@ -70,8 +69,9 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: Colors.PRIMARY,
-    padding: 15,
+    padding: 20,
     borderRadius: 99,
-    marginTop: "25%",
+    marginTop: "15%",
+    marginBottom: 30,
   },
 });

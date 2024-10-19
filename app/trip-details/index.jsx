@@ -1,18 +1,40 @@
-import { View, Text, Image } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  Alert,
+} from "react-native";
 import React, { useEffect, useState } from "react";
-import { useLocalSearchParams, useNavigation } from "expo-router";
+import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import { Colors } from "../../constants/Colors";
 import moment from "moment";
 import FlightInfo from "../../components/TripDetails/FlightInfo";
 import HotelList from "../../components/TripDetails/HotelList";
 import PlannedTrip from "../../components/TripDetails/PlannedTrip";
-import { ScrollView } from "react-native";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { doc, deleteDoc } from "firebase/firestore";
+import { db } from "../../configs/FirebaseConfig";
+import { getAuth, onAuthStateChanged } from "@firebase/auth";
 
 export default function TripDetails() {
   const navigation = useNavigation();
   const { trip } = useLocalSearchParams();
   const [tripDetails, setTripDetails] = useState(null);
   const [userPreferences, setUserPreferences] = useState([]);
+  const router = useRouter();
+
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        router.replace("/auth/sign-in");
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   useEffect(() => {
     navigation.setOptions({
@@ -21,37 +43,47 @@ export default function TripDetails() {
       headerTitle: "",
     });
 
-    // console.log(typeof trip);
-    // console.log(trip);
     try {
       const parsedTrip = JSON.parse(trip);
-      //   console.log("Parsed trip:", parsedTrip);
-      setTripDetails((prev) => parsedTrip);
-      //   console.log("Trip details: ", tripDetails);
+      setTripDetails(parsedTrip);
     } catch (error) {
       console.error("Error parsing trip:", error);
     }
-    // console.log(trip);
   }, []);
 
   useEffect(() => {
     if (tripDetails && tripDetails.tripData) {
       try {
-        setUserPreferences(JSON.parse(tripDetails?.tripData));
+        setUserPreferences(JSON.parse(tripDetails.tripData));
       } catch (error) {
         console.error("Error parsing tripData:", error);
       }
-
-      //   console.log("Day Plan : ", tripDetails?.aiTripPlan?.dayPlan);
     }
   }, [tripDetails]);
+
+  const handleDeleteTrip = async () => {
+    Alert.alert("Delete Trip", "Are you sure you want to delete this trip?", [
+      { text: "Cancel", style: "cancel" },
+      {
+        text: "Delete",
+        style: "destructive",
+        onPress: async () => {
+          try {
+            await deleteDoc(doc(db, "UserTrips", tripDetails.docId));
+            router.replace("/mytrip");
+          } catch (error) {
+            console.error("Error deleting trip:", error);
+          }
+        },
+      },
+    ]);
+  };
 
   return (
     tripDetails && (
       <ScrollView>
         <Image
           source={{
-            uri: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${userPreferences.locationInfo?.photoRef}&key=${process.env.EXPO_PUBLIC_GOOGLE_MAP_KEY}`,
             uri: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${userPreferences.locationInfo?.photoRef}&key=${process.env.EXPO_PUBLIC_GOOGLE_MAP_KEY}`,
           }}
           style={{
@@ -69,14 +101,29 @@ export default function TripDetails() {
             borderTopRightRadius: 30,
           }}
         >
-          <Text
+          <View
             style={{
-              fontSize: 25,
-              fontFamily: "outfit-bold",
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
             }}
           >
-            {userPreferences.locationInfo?.name}
-          </Text>
+            <Text
+              style={{
+                fontSize: 25,
+                fontFamily: "outfit-bold",
+                width: "80%",
+              }}
+            >
+              {userPreferences.locationInfo?.name}
+            </Text>
+
+            <TouchableOpacity onPress={handleDeleteTrip}>
+              <MaterialIcons name="delete" size={30} color={Colors.RED} />
+            </TouchableOpacity>
+          </View>
+
           <View
             style={{
               display: "flex",
@@ -104,6 +151,7 @@ export default function TripDetails() {
               - {moment(userPreferences.endDate).format("DD MMM YYYY")}
             </Text>
           </View>
+
           <Text
             style={{
               fontFamily: "outfit",
